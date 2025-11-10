@@ -70,10 +70,15 @@
       z-index: 90;
       transition: transform 0.3s ease, width 0.3s ease;
       overflow-y: auto;
+      transform: translateX(-100%);
+    }
+    
+    .menu.open {
+      transform: translateX(0);
     }
     
     .menu.collapsed {
-      width: 140px;
+      width: 80px;
     }
     
     .menu ul {
@@ -104,30 +109,27 @@
     .menu ul li a {
       text-decoration: none;
       color: var(--headline);
-      display: flex-start;
-      flex-direction: column;
+      display: flex;
+      align-items: center;
       font-weight: 500;
     }
     
     .menu ul li a i {
       color: var(--accent);
-      padding-left: 12px;
       font-size: 1rem;
+      min-width: 24px;
+      text-align: center;
     }
     
     .menu ul li a span {
-      padding-left: 4px;
+      margin-left: 12px;
       transition: opacity 0.3s ease;
       font-size: 0.9rem;
     }
     
     .menu.collapsed ul li a span {
-        align-items: center;
-        justify-items: center;
-    }
-    
-    .menu.collapsed ul li a i {
-        display: flex;
+      opacity: 0;
+      position: absolute;
     }
     
     .menu-header {
@@ -159,7 +161,6 @@
       flex-direction: column;
       position: relative;
       overflow-y: auto;
-      margin-left: 280px;
       transition: margin-left 0.3s ease;
       min-height: 100vh;
     }
@@ -350,6 +351,28 @@
     }
     
     /* Responsive design */
+    @media (min-width: 901px) {
+      .menu {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 280px;
+      }
+      
+      .menu.collapsed + .main-content {
+        margin-left: 80px;
+      }
+      
+      .hamburger-btn {
+        left: 16px;
+      }
+      
+      .menu.collapsed ~ .hamburger-btn {
+        left: 16px;
+      }
+    }
+    
     @media (max-width: 900px) {
       .menu {
         transform: translateX(-100%);
@@ -366,10 +389,6 @@
       
       .main-content {
         margin-left: 0;
-      }
-      
-      body.menu-collapsed .main-content {
-        margin-left: 100px;
       }
       
       .hamburger-btn {
@@ -389,6 +408,10 @@
         height: 300px;
       }
       
+      .content h1 {
+        font-size: 2rem;
+      }
+      
       .project-menu ul {
         flex-wrap: wrap;
       }
@@ -399,10 +422,12 @@
         flex-direction: row;
         justify-content: flex-start;
       }
+      
       .menu ul li {
         align-items: center;
         justify-items: center;
       }
+      
       .menu ul li a i {
         margin-bottom: 0;
         font-size: 1rem;
@@ -410,6 +435,60 @@
       
       .menu ul li a span {
         font-size: 1rem;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .content p {
+        font-size: 1rem;
+      }
+      
+      .project-menu ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .project-menu ul li {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 15px;
+      }
+      
+      .hero {
+        padding: 15px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+      
+      .content h1 {
+        font-size: 1.6rem;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      .buttons button {
+        width: 100%;
+      }
+      
+      .project-content {
+        padding: 20px;
       }
     }
   </style>
@@ -473,7 +552,6 @@
         <li class="active" onclick="showTab('case-study', event)">Case Study</li>
         <li onclick="showTab('design-analysis', event)">Design Analysis</li>
         <li onclick="showTab('learnings', event)">Learnings</li>
-        <!--<li onclick="showTab('design', event)">Design</li>-->
       </ul>
     </div>
     
@@ -865,7 +943,7 @@
             <div style="display:flex; gap:10px; margin: 12px 0 16px;">
               <div style="flex:1; height:100%; border:1px dashed #94a3b8;
                           display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
-                <img src="hi-fi 16,17.pnG" style="width: 100%;height: 100%; object-fit: cover;" >
+                <img src="hi-fi 16,17.png" style="width: 100%;height: 100%; object-fit: cover;" >
               </div>
             </div>
 
@@ -895,542 +973,30 @@
           <section id="thank-you" style="margin-bottom: 12px; text-align: center;">
             <h2 style="font-size: 28px; margin: 0 0 10px; color:#0f172a;"> Thank You</h2>
             <p style="margin: 0 0 12px; color:#475569;">Thanks for your time!</p>
-    
-
-
-</div>
-
           </section>
         </div>
       </div>
       
       <!-- Design Analysis Tab -->
       <div id="design-analysis" class="tab-content">
-        
-        <section class="wcag-section">
-  <!-- Combo A: Yellow on Teal (#FFD45C on #11547E) — 5.71:1 -->
-  <article class="contrast-card">
-    <header class="card-head">
-      <h2>Contrast Check – Combo A</h2>
-      <div class="swatches">
-        <span class="swatch" style="--c:#FFD45C" aria-label="Foreground #FFD45C"></span>
-        <span class="swatch" style="--c:#11547E" aria-label="Background #11547E"></span>
-      </div>
-    </header>
-
-    <p class="meta">
-      <strong>Foreground:</strong> #FFD45C &nbsp; | &nbsp; <strong>Background:</strong> #11547E
-      <span class="ratio">Contrast Ratio: <b>5.71:1</b></span>
-    </p>
-
-    <!-- Preview block -->
-    <div class="preview" style="--bg:#11547E; --fg:#FFD45C;">
-      <div class="sample normal">The five boxing wizards jump quickly.</div>
-      <div class="sample large"><strong>The five boxing wizards jump quickly.</strong></div>
-      <div class="sample ui">
-        <span class="star" aria-hidden="true">★</span>
-        <input class="fake-input" value="Text Input" readonly />
-      </div>
-    </div>
-
-    <!-- WCAG results -->
-    <div class="results">
-      <div class="block">
-        <h3>Normal Text</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-          <div>WCAG AAA: <span class="badge fail">Fail</span></div>
-        </div>
-      </div>
-      <div class="block">
-        <h3>Large Text</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
-        </div>
-      </div>
-      <div class="block">
-        <h3>Graphical Objects &amp; UI Components</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <!-- Combo B: White on Teal (#FFFFFF on #11547E) — 8.09:1 -->
-  <article class="contrast-card">
-    <header class="card-head">
-      <h2>Contrast Check – Combo B</h2>
-      <div class="swatches">
-        <span class="swatch" style="--c:#FFFFFF" aria-label="Foreground #FFFFFF"></span>
-        <span class="swatch" style="--c:#11547E" aria-label="Background #11547E"></span>
-      </div>
-    </header>
-
-    <p class="meta">
-      <strong>Foreground:</strong> #FFFFFF &nbsp; | &nbsp; <strong>Background:</strong> #11547E
-      <span class="ratio">Contrast Ratio: <b>8.09:1</b></span>
-    </p>
-
-    <!-- Preview block -->
-    <div class="preview" style="--bg:#11547E; --fg:#FFFFFF;">
-      <div class="sample normal">The five boxing wizards jump quickly.</div>
-      <div class="sample large"><strong>The five boxing wizards jump quickly.</strong></div>
-      <div class="sample ui">
-        <span class="star" aria-hidden="true">★</span>
-        <input class="fake-input" value="Text Input" readonly />
-      </div>
-    </div>
-
-    <!-- WCAG results -->
-    <div class="results">
-      <div class="block">
-        <h3>Normal Text</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
-        </div>
-      </div>
-      <div class="block">
-        <h3>Large Text</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
-        </div>
-      </div>
-      <div class="block">
-        <h3>Graphical Objects &amp; UI Components</h3>
-        <div class="rows">
-          <div>WCAG AA: <span class="badge pass">Pass</span></div>
-        </div>
-      </div>
-    </div>
-  </article>
-</section>
-
-<style>
-/* --- WCAG Contrast Cards Styles --- */
-.wcag-section{
-  display:grid;
-  gap:28px;
-  margin:24px 0 8px;
-}
-.contrast-card{
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:16px 18px;
-  background:#fff;
-  box-shadow:0 6px 18px rgba(0,0,0,.06);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-}
-.card-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.card-head h2{
-  font-size:18px;
-  margin:0;
-}
-.swatches{
-  display:flex; gap:8px;
-}
-.swatch{
-  width:22px; height:22px; border-radius:6px; background:var(--c);
-  outline:1px solid #d1d5db; box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);
-}
-.meta{
-  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-  font-size:13px; color:#374151; margin:8px 0 12px;
-}
-.ratio{ margin-left:auto; background:#f3f4f6; padding:6px 10px; border-radius:8px; }
-
-.preview{
-  background:var(--bg); color:var(--fg);
-  border-radius:10px; padding:18px;
-  display:grid; gap:12px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
-}
-.sample.normal{ font-size:18px; line-height:1.45; text-align:center; }
-.sample.large{ font-size:24px; line-height:1.35; text-align:center; }
-.sample.ui{
-  display:flex; align-items:center; justify-content:center; gap:12px;
-}
-.star{ font-size:26px; line-height:1; }
-.fake-input{
-  background:#fff; color:#111827; border:2px solid currentColor;
-  border-radius:4px; padding:6px 10px; width:180px; font:inherit;
-}
-
-.results{
-  display:grid; grid-template-columns: repeat(3, 1fr);
-  gap:16px; margin-top:14px;
-}
-.results .block h3{
-  margin:0 0 6px; font-size:16px; color:#991b1b; border-bottom:2px solid #e5a3a3;
-  padding-bottom:4px;
-}
-.rows{ display:grid; gap:6px; font-size:14px; }
-.badge{
-  display:inline-block; padding:2px 8px; border-radius:999px;
-  font-size:12px; font-weight:700; line-height:1.6; vertical-align:middle;
-  color:#fff;
-}
-.badge.pass{ background:#15803d; }   /* green */
-.badge.fail{ background:#b91c1c; }   /* red */
-
-@media (max-width: 800px){
-  .results{ grid-template-columns:1fr; }
-  .ratio{ margin-left:0; }
-}
-</style>
-<!-- =========================
-  TYPOGRAPHY & COLOR — KIDS APP
-  Font: Boogaloo (Display) + System UI (Body)
-  Palette: Teal #11547E, Yellow #FFD45C, White #FFFFFF
-========================== -->
-<link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
-
-<section class="type-color-section">
-
-  <!-- WHY BOOGALOO -->
-  <article class="doc-card">
-    <h2>Typography Choice — Boogaloo</h2>
-    <p class="lede">
-      <strong>Why:</strong> Boogaloo has a friendly, rounded, hand-lettered feel that reads as playful and approachable for kids.
-      Its wide forms and open counters support quick recognition at a glance—ideal for headlines, tabs, and labels in a story-creation app.
-    </p>
-    <ul class="bullets">
-      <li><b>Expressive headlines:</b> The bubbly shapes signal fun without being chaotic.</li>
-      <li><b>Clear letterforms:</b> High x-height & open counters aid early readers.</li>
-      <li><b>Distinct from body text:</b> Keeps hierarchy obvious (playful display vs. neutral body).</li>
-    </ul>
-  </article>
-
-  <!-- HOW WE USE IT -->
-  <article class="doc-card">
-    <h2>How We Use It</h2>
-    <ul class="bullets">
-      <li><b>Display only:</b> Boogaloo for H1–H3, tabs, badges, and key CTAs.</li>
-      <li><b>Body:</b> System UI stack for paragraphs, descriptions, and long reads.</li>
-      <li><b>Sizes:</b> Large, roomy type with generous line height for tap & read comfort.</li>
-      <li><b>Accessibility rule:</b> Yellow on teal (<code>#FFD45C</code> on <code>#11547E</code>) is used only for <b>large text and graphics</b> (WCAG AA passes at 5.71:1 for large text). For normal text, use white on teal (8.09:1).</li>
-    </ul>
-
-    <div class="grid-2 demo-block">
-      <!-- Headline / Display Examples -->
-      <section class="panel teal">
-        <h3 class="kicker">Display Text (Boogaloo)</h3>
-        <h1 class="display white">Create Your Story</h1>
-        <h2 class="display yellow large-only">Magic Words Unlocked</h2>
-        <p class="note">
-          <b>White on Teal</b> (8.09:1) — use for all headings and normal text.<br>
-          <b>Yellow on Teal</b> (5.71:1) — use only for big, bold emphasis (≥ 24px regular or ≥ 19px bold).
-        </p>
-      </section>
-
-      <!-- Body / UI Examples -->
-      <section class="panel light">
-        <h3 class="kicker">Body & UI (System UI)</h3>
-        <p class="body">
-          Kids can pick characters, places, and feelings to build a fun story. Parents get safe controls.
-        </p>
-
-        <div class="ui-row">
-          <button class="btn-primary">
-            Start Story
-          </button>
-
-          <button class="btn-outline">
-            Browse Library
-          </button>
-        </div>
-
-        <div class="tag-row">
-          <span class="tag teal">Ages 5–12</span>
-          <span class="tag yellow large-only">NEW</span>
-        </div>
-      </section>
-    </div>
-  </article>
-
-  <!-- SPEC & TOKENS -->
-  <article class="doc-card">
-    <h2>Type Scale & Color Tokens</h2>
-
-    <div class="grid-2">
-      <section>
-        <h3 class="kicker">Type Scale</h3>
-        <div class="type-sample">
-          <div class="t t-display">H1 / Display — 40/44 — Boogaloo</div>
-          <div class="t t-title">H2 / Title — 28/32 — Boogaloo</div>
-          <div class="t t-sub">H3 / Section — 22/26 — Boogaloo</div>
-          <div class="t t-body">Body — 16/24 — System UI</div>
-          <div class="t t-label">Label/CTA — 18/22 — Boogaloo (All-Caps optional)</div>
-        </div>
-      </section>
-
-      <section>
-        <h3 class="kicker">Color Tokens</h3>
-        <div class="swatch-row">
-          <span class="swatch" style="--c:#11547E"></span>
-          <div class="swatch-meta">
-            <b>--c-teal-700</b> <code>#11547E</code><br>
-            Primary surfaces, headers, nav bars.
-          </div>
-        </div>
-
-        <div class="swatch-row">
-          <span class="swatch" style="--c:#FFD45C"></span>
-          <div class="swatch-meta">
-            <b>--c-sun-400</b> <code>#FFD45C</code><br>
-            Accents, stars, badges, <b>large</b> display text only on teal.
-          </div>
-        </div>
-
-        <div class="swatch-row">
-          <span class="swatch" style="--c:#FFFFFF; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1)"></span>
-          <div class="swatch-meta">
-            <b>--c-white</b> <code>#FFFFFF</code><br>
-            Primary text on teal for max contrast.
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="callout">
-      <b>WCAG Note:</b> White on Teal (8.09:1) passes AA/AAA for normal text. Yellow on Teal (5.71:1) passes AA for <b>large text</b> and graphics only—use for big headings, icons, or badges, not for paragraphs.
-    </div>
-  </article>
-
-</section>
-
-<style>
-/* Base */
-:root{
-  --c-teal-700:#11547E;
-  --c-sun-400:#FFD45C;
-  --c-white:#FFFFFF;
-
-  --radius:16px;
-  --shadow:0 10px 28px rgba(0,0,0,.08);
-}
-
-.type-color-section{
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-  display: grid; gap: 28px; margin: 28px 0;
-}
-.doc-card{
-  background:#fff; border:1px solid #e5e7eb; border-radius: var(--radius);
-  padding:20px; box-shadow: var(--shadow);
-}
-.doc-card h2{ margin:0 0 10px; font-size:22px; }
-.lede{ margin:6px 0 12px; font-size:15px; color:#374151; }
-.bullets{ margin:0; padding-left:18px; color:#374151; line-height:1.6; }
-.bullets b{ color:#111827; }
-.kicker{
-  text-transform:uppercase; letter-spacing:.08em; font-size:12px; color:#6b7280; margin:0 0 8px;
-}
-
-/* Demo panels */
-.grid-2{ display:grid; gap:18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (max-width: 900px){ .grid-2{ grid-template-columns:1fr; } }
-
-.panel{
-  border-radius:14px; padding:18px; min-height: 180px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
-}
-.panel.teal{ background: var(--c-teal-700); color: var(--c-white); }
-.panel.light{ background:#f8fafc; }
-
-.display{ font-family:"Boogaloo", system-ui, sans-serif; line-height:1.1; }
-.white{ color: var(--c-white); }
-.yellow{ color: var(--c-sun-400); }
-
-/* Large-only guard — ensures yellow-on-teal used only when accessible */
-.large-only{
-  font-size: 28px; line-height: 1.15; font-weight: 700;
-}
-
-/* Body & UI */
-.body{ margin:8px 0 14px; color:#111827; }
-.ui-row{ display:flex; gap:10px; flex-wrap:wrap; }
-
-button{ font: inherit; }
-.btn-primary{
-  font-family:"Boogaloo", system-ui, sans-serif;
-  background: var(--c-teal-700); color: var(--c-white);
-  border: none; padding: 10px 16px; border-radius: 12px;
-  box-shadow: 0 4px 0 rgba(0,0,0,.12);
-}
-.btn-primary:hover{ filter: brightness(1.05); }
-
-.btn-outline{
-  font-family:"Boogaloo", system-ui, sans-serif;
-  background: #fff; color: var(--c-teal-700);
-  border: 2px solid var(--c-teal-700); padding: 8px 14px; border-radius: 12px;
-}
-
-.tag-row{ display:flex; gap:8px; margin-top:12px; }
-.tag{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:6px 10px; border-radius:999px; font-family:"Boogaloo", system-ui, sans-serif;
-}
-.tag.teal{ background: var(--c-teal-700); color: var(--c-white); }
-.tag.yellow{ background: var(--c-sun-400); color: #3a2f00; }
-
-/* Scale preview */
-.type-sample{ display:grid; gap:8px; }
-.t{ padding:8px 10px; border-radius:10px; background:#f3f4f6; }
-.t-display{ font-family:"Boogaloo", system-ui, sans-serif; font-size:40px; line-height:44px; }
-.t-title{ font-family:"Boogaloo", system-ui, sans-serif; font-size:28px; line-height:32px; }
-.t-sub{ font-family:"Boogaloo", system-ui, sans-serif; font-size:22px; line-height:26px; }
-.t-body{ font-size:16px; line-height:24px; }
-.t-label{ font-family:"Boogaloo", system-ui, sans-serif; font-size:18px; line-height:22px; }
-
-/* Swatches */
-.swatch-row{ display:flex; align-items:center; gap:12px; margin:10px 0; }
-.swatch{
-  width:28px; height:28px; border-radius:8px; background: var(--c);
-  box-shadow: 0 0 0 1px rgba(0,0,0,.08);
-}
-.swatch-meta{ font-size:14px; color:#374151; }
-
-/* Callout */
-.callout{
-  margin-top:14px; background:#fff7ed; color:#7c2d12; border:1px solid #fdba74;
-  border-radius:12px; padding:12px 14px;
-}
-</style>
+        <!-- Design Analysis content would go here -->
+        <h2>Design Analysis</h2>
+        <p>This section would contain the detailed design analysis of the project.</p>
       </div>
       
       <!-- Learnings Tab -->
       <div id="learnings" class="tab-content">
-        
-        <section id="daily-story-teller-learnings" aria-labelledby="dst-learnings-title">
-  <h2 id="dst-learnings-title">Key Learnings from the Daily Story Teller App</h2>
-
-  <ol class="learnings">
-    <li>
-      <h3> Understanding Your Audience (Kids + Parents)</h3>
-      <p>Learned how to design for kids aged 5–12 with simple navigation, bold visuals, and large tap areas.</p>
-      <p>Discovered that parents influence the usage, so safety, privacy, and a meaningful learning outcome are critical.</p>
-    </li>
-
-    <li>
-      <h3> Crafting a Fun + Educational User Flow</h3>
-      <p>Built a flow that makes story creation feel like a game, not a task.</p>
-      <p>Balanced creativity + structure by guiding kids through prompts (Theme → Characters → Plot → Output).</p>
-    </li>
-
-    <li>
-      <h3> UI/UX Principles for Kids’ Apps</h3>
-      <p>Applied psychology behind kids’ apps:</p>
-      <ul>
-        <li>High contrast colors</li>
-        <li>Friendly shapes and illustrations</li>
-        <li>Rewards, badges, and motivation</li>
-      </ul>
-      <p>Prioritized reduced cognitive load with fewer buttons and guided screens.</p>
-    </li>
-
-    <li>
-      <h3> Visual Design for Engagement</h3>
-      <p>Learned how illustrations, mascots, and micro-animations improve user engagement.</p>
-      <p>Designed a visually rich interface while keeping UI non-overwhelming for kids.</p>
-    </li>
-
-    <li>
-      <h3> Voice + Interactive Learning</h3>
-      <p>Integrated multi-modal learning:</p>
-      <ul>
-        <li>Reading</li>
-        <li>Listening (text-to-speech)</li>
-        <li>Voice recording to narrate stories</li>
-      </ul>
-      <p>Enhanced learning beyond just reading.</p>
-    </li>
-
-    <li>
-      <h3> Gamification Strategy</h3>
-      <p>Used points, badges, streaks, and challenges to build habit-forming learning.</p>
-      <p>Learned how to convert passive consumption → active participation.</p>
-    </li>
-
-    <li>
-      <h3> Content Structure and Safety</h3>
-      <p>Built understanding of:</p>
-      <ul>
-        <li>Age-appropriate content filtering</li>
-        <li>Parental controls</li>
-        <li>No ads / safe environment</li>
-      </ul>
-      <p>Focused on keeping the app child-safe and educational.</p>
-    </li>
-
-    <li>
-      <h3> Design System for Kids’ Products</h3>
-      <p>Developed a mini-design system for consistency:</p>
-      <ul>
-        <li>Color palette for children’s apps</li>
-        <li>Typography for young reading levels</li>
-        <li>Iconography rules (clear, bold, high-contrast)</li>
-      </ul>
-    </li>
-
-    <li>
-      <h3> Accessibility</h3>
-      <p>Learned to design for early readers and children with learning challenges:</p>
-      <ul>
-        <li>Voice assistance</li>
-        <li>Larger fonts and touch targets</li>
-        <li>Visual cue–based navigation</li>
-      </ul>
-    </li>
-
-    <li>
-      <h3> Case Study Storytelling</h3>
-      <p>This project also helped you understand how to present a UX case study:</p>
-      <p>Problem → Research → Ideation → Wireframes → UI → Testing → Learnings</p>
-    </li>
-  </ol>
-</section>
-      </div>
-      <!--
-      
-      <div id="design" class="tab-content">
-        <h2>Design Process & Deliverables</h2>
-        <p>The design process for this project followed a structured approach with clear milestones and deliverables at each stage.</p>
-        <p><strong>Research Phase:</strong></p>
-        <ul>
-          <li>Competitive analysis of 12 banking applications</li>
-          <li>User interviews with 25 participants</li>
-          <li>Heuristic evaluation of existing application</li>
-        </ul>
-        <p><strong>Design Phase:</strong></p>
-        <ul>
-          <li>Information architecture and user flow diagrams</li>
-          <li>Low-fidelity wireframes for key screens</li>
-          <li>Interactive prototypes for usability testing</li>
-          <li>High-fidelity mockups with complete design system</li>
-        </ul>
-        <p><strong>Final Deliverables:</strong></p>
-        <ul>
-          <li>Complete design system with component library</li>
-          <li>Annotated design specifications for development</li>
-          <li>Interactive prototype demonstrating key user flows</li>
-          <li>Accessibility audit report</li>
-        </ul>
+        <!-- Learnings content would go here -->
+        <h2>Learnings</h2>
+        <p>This section would contain the key learnings from the project.</p>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <script>
     // Function to toggle the sidebar (YouTube-style)
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
-      const body = document.body;
       const overlay = document.getElementById('sidebarOverlay');
 
       // Mobile behavior: slide overlay in/out
@@ -1446,7 +1012,6 @@ button{ font: inherit; }
       } else {
         // Desktop behavior: YouTube-like collapse (icons only)
         sidebar.classList.toggle('collapsed');
-        body.classList.toggle('menu-collapsed');
       }
     }
 
@@ -1481,7 +1046,6 @@ button{ font: inherit; }
       } else {
         // Keep collapsed state off on mobile so slide works
         sidebar.classList.remove('collapsed');
-        document.body.classList.remove('menu-collapsed');
       }
     });
 
@@ -1511,6 +1075,4 @@ button{ font: inherit; }
     }
   </script>
 </body>
-
 </html>
-
