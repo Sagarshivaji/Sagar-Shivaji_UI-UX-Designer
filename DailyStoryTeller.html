@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newspaper Portfolio - Projects</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    
+    /* Newspaper-inspired color scheme */
+    :root {
+      --newsprint: #f8f8f8;
+      --headline: #222;
+      --accent: #100f0f; /* Dark red for newspaper feel */
+      --highlight: #ffffff; /* Aged paper color */
+      --border: #000000;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hamburger menu button */
+    .hamburger-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #0e0e0e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(2,6,23,.2);
+      transition: left 0.3s ease;
+    }
+    
+    .hamburger-btn:hover {
+      background: #2a2a2a;
+    }
+    
+    /* Sidebar menu */
+    .menu {
+      background-color: #0e0e0e;
+      border-right: 2px solid var(--border);
+      box-shadow: 2px 0 5px var(--shadow);
+      padding: 20px;
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 90;
+      transition: transform 0.3s ease, width 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .menu.collapsed {
+      width: 140px;
+    }
+    
+    .menu ul {
+      list-style-type: none;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .menu ul li {
+      margin: 10px 0;
+      padding: 16px;
+      align-items: center;
+      background-color: var(--newsprint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    
+    .menu ul li:hover {
+      background-color: #e8e0cc;
+      transform: translateX(5px);
+    }
+    
+    .menu ul li a {
+      text-decoration: none;
+      color: var(--headline);
+      display: flex-start;
+      flex-direction: column;
+      font-weight: 500;
+    }
+    
+    .menu ul li a i {
+      color: var(--accent);
+      padding-left: 12px;
+      font-size: 1rem;
+    }
+    
+    .menu ul li a span {
+      padding-left: 4px;
+      transition: opacity 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .menu.collapsed ul li a span {
+        align-items: center;
+        justify-items: center;
+    }
+    
+    .menu.collapsed ul li a i {
+        display: flex;
+    }
+    
+    .menu-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      justify-content: center;
+    }
+    
+    .menu-header h2 {
+      color: white;
+      margin-left: 10px;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+    
+    .menu.collapsed .menu-header h2 {
+      opacity: 0;
+    }
+    
+    /* Main content area */
+    .main-content {
+      padding: 20px;
+      background-color: var(--newsprint);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      margin-left: 280px;
+      transition: margin-left 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    /* Newspaper header effect */
+    .main-content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent) 0%, #8b4513 100%);
+    }
+    
+    /* Hero section */
+    .hero {
+      display: flex;
+      height: 500px;
+      padding: 20px;
+      width: 100%;
+      background-color: var(--highlight);
+      margin-bottom: 30px;
+      border-radius: 4px;
+    }
+    
+    .content {
+      background-color: var(--newsprint);
+      width: 50%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px dashed var(--border);
+    }
+    
+    .content h1 {
+      font-size: 2.5rem;
+      color: var(--headline);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    
+    .content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .buttons button {
+      padding: 10px 20px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .buttons button:hover {
+      background-color: #6a0000;
+    }
+    
+    /* Hero image section */
+    .hero-image {
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--newsprint);
+    }
+    
+    .hero-image .image-placeholder {
+      width: 100%;
+      height: 100%;
+      background-color: #e0d6c2;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-style: italic;
+    }
+    
+    .hero-image .image-placeholder i {
+      font-size: 3rem;
+      color: var(--accent);
+    }
+    
+    /* Project page specific styles */
+    .project-menu {
+      background-color: var(--highlight);
+      padding: 15px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+    
+    .project-menu ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .project-menu ul li {
+      padding: 10px 15px;
+      background-color: var(--newsprint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+      position: relative;
+    }
+    
+    .project-menu ul li.active {
+      background-color: var(--accent);
+      color: white;
+    }
+    
+    .project-menu ul li:hover {
+      background-color: #e8e0cc;
+    }
+    
+    .project-menu ul li.active:hover {
+      background-color: #6a0000;
+    }
+    
+    .project-content {
+      background-color: var(--highlight);
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 4px 8px var(--shadow);
+      margin-bottom: 30px;
+    }
+    
+    .project-content h2 {
+      margin-bottom: 20px;
+      color: var(--headline);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    
+    .project-content p {
+      margin-bottom: 15px;
+    }
+    
+    /* Tabs for project details */
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Mobile overlay */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease;
+      z-index: 85;
+    }
+    
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 900px) {
+      .menu {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      
+      .menu.open {
+        transform: translateX(0);
+      }
+      
+      .menu.collapsed {
+        transform: translateX(-100%);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      body.menu-collapsed .main-content {
+        margin-left: 100px;
+      }
+      
+      .hamburger-btn {
+        display: block;
+      }
+      
+      .hero {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .content, .hero-image {
+        width: 100%;
+      }
+      
+      .hero-image {
+        height: 300px;
+      }
+      
+      .project-menu ul {
+        flex-wrap: wrap;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .menu ul li a {
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .menu ul li {
+        align-items: center;
+        justify-items: center;
+      }
+      .menu ul li a i {
+        margin-bottom: 0;
+        font-size: 1rem;
+      }
+      
+      .menu ul li a span {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="hamburger-btn" id="hamburger" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  
+  <div class="menu" id="sidebar">
+    <div class="menu-header">
+      <h2>Sagar Shivaji</h2>
+    </div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+      <li><a href="Work.html" class="active"><i class="fas fa-project-diagram"></i> <span>Work</span></a></li>
+      <li><a href="aboutme.html"><i class="fas fa-user"></i> <span>About</span></a></li>
+      <li><a href="#"><i class="fas fa-file-alt"></i> <span>Resume</span></a></li>
+    </ul>
+  </div>
+  
+  <!-- Projects Page Content -->
+  <div class="main-content" id="projects-page">
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="content">
+        <div>
+          <h1>Daily Story Teller App</h1>
+          <p>Children often consume content passively through videos or pre-made stories. Daily Story Teller flips that experience by inviting them to participate in storytelling through fun prompts, colorful design, and interactive choices. The goal was to create a safe, engaging, and educational space that nurtures creativity, language development, and imagination.</p>
+          <div class="buttons">
+            <a href="https://www.figma.com/design/zvbmP3ufFTHz7Dey5EgNXG/Research?node-id=1958-7664&t=HcOWyonV3J42Uf9S-1" target="_blank" style="text-decoration:none;">
+              <button style="margin-bottom: 20px;">
+                Figma File
+                <i class="fa-brands fa-figma" style="padding-left:4px;"></i>
+              </button>
+            </a>
+          </div>
+          <hr>
+          <div class="Overview" style="padding-top: 10px;">
+            <div style="font-size: 16px; color: #444;display: flex; flex-wrap: wrap; ">
+              <div><strong>My Role:</strong> UX Research, UI/UX Design &nbsp;|&nbsp;
+              <strong>Duration:</strong> 12 Days</div>
+              <div><strong>Tools Used:</strong> Figma, Illustrator &nbsp;|&nbsp;
+              <strong>Target Audience:</strong> Kids(6–12 years)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="image-placeholder">
+          <img src="daily story teller/Daily Story teller app Hero.png" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Project Navigation Menu -->
+    <div class="project-menu" style="position:sticky;">
+      <ul>
+        <li class="active" onclick="showTab('case-study', event)">Case Study</li>
+        <li onclick="showTab('design-analysis', event)">Design Analysis</li>
+        <li onclick="showTab('learnings', event)">Learnings</li>
+        <!--<li onclick="showTab('design', event)">Design</li>-->
+      </ul>
+    </div>
+    
+    <!-- Project Content Tabs -->
+    <div class="project-content">
+      <!-- Case Study Tab -->
+      <div id="case-study" class="tab-content active">
+        <h2>Daily Story Teller - Case Study</h2>
+        <div style="margin: 0 auto; padding: 32px 20px; color: #1f2937; line-height: 1.6;">
+          <div style="margin-bottom: 12px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b;">Case Study</div>
+
+          <!-- 3. The Challenge -->
+          <section id="challenge" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color: #0f172a;"> The Challenge</h2>
+            <p style="margin: 0 0 10px;">
+              Most kids' apps promote <strong>passive content consumption</strong> (videos, cartoons, audiobooks). Children rarely get opportunities to create, express, or imagine. Parents struggle to find safe digital spaces that encourage creativity.
+            </p>
+            <p style="margin: 0;">
+              There is a need for an app that enables kids to <strong>imagine, create, and share stories</strong> in a guided and safe environment.
+            </p>
+          </section>
+
+          <!-- 4. Goals & Success Metrics -->
+          <section id="goals" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 16px; color: #0f172a;"> Goals &amp; Success Metrics</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+              <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fafafa;">
+                <h3 style="margin: 0 0 10px; font-size: 18px; color: #111827;">Project Goals</h3>
+                <ul style="margin: 0; padding-left: 18px;">
+                  <li>Encourage kids to create stories instead of just consuming content</li>
+                  <li>Build a simple, safe, kid-friendly storytelling platform</li>
+                  <li>Improve creativity, vocabulary, and daily learning habit</li>
+                </ul>
+              </div>
+
+              <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fafafa;">
+                <h3 style="margin: 0 0 10px; font-size: 18px; color: #111827;">Success Indicators</h3>
+                <ul style="margin: 0; padding-left: 18px;">
+                  <li>Daily engagement &amp; streak building</li>
+                  <li>Number of stories created weekly</li>
+                  <li>Kids completing at least 10 stories/month</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. Design Thinking Process -->
+          <section id="process" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color: #0f172a;">Design Thinking Process</h2>
+            <div style="display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); gap: 12px; align-items: stretch; margin-bottom: 14px;">
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; background: #ffffff;">
+                <div style="font-weight: 700; margin-bottom: 6px;">Empathize</div>
+                <div style="font-size: 13px; color: #475569;">Observe kids &amp; parents, gather insights</div>
+              </div>
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; background: #ffffff;">
+                <div style="font-weight: 700; margin-bottom: 6px;">Define</div>
+                <div style="font-size: 13px; color: #475569;">Synthesize pain points &amp; needs</div>
+              </div>
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; background: #ffffff;">
+                <div style="font-weight: 700; margin-bottom: 6px;">Ideate</div>
+                <div style="font-size: 13px; color: #475569;">Brainstorm, Crazy 8s, shortlist ideas</div>
+              </div>
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; background: #ffffff;">
+                <div style="font-weight: 700; margin-bottom: 6px;">Prototype</div>
+                <div style="font-size: 13px; color: #475569;">Low-fi → Mid-fi → High-fi</div>
+              </div>
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; text-align: center; background: #ffffff;">
+                <div style="font-weight: 700; margin-bottom: 6px;">Test</div>
+                <div style="font-size: 13px; color: #475569;">Validate, iterate, improve</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. Research -->
+          <section id="research" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color: #0f172a;">Research</h2>
+
+            <h3 style="margin: 0 0 8px; font-size: 18px; color:#111827;">User Research — Quantitative & Qualitative Insights</h3>
+            <p style="margin: 0 0 10px;">
+              To understand children's digital habits, content preferences, and parents' expectations, I conducted observational research, 
+              secondary research using trusted sources .
+            </p>
+
+            <!-- Image Row -->
+            <div style="display:flex; gap:10px; margin-bottom:12px;">
+              <!-- Research Image 1 -->
+              <div class="project-image" style="flex:1; height:250px; border: 1px solid #cbd5e1; border-radius:10px; overflow:hidden;">
+                <img src="daily story teller/research 1.png" style="width:100%; height:100%; object-fit:cover;" alt="Research Data 1">
+              </div>
+
+              <!-- Research Image 2 -->
+              <div class="project-image" style="flex:1; height:250px; border: 1px solid #cbd5e1; border-radius:10px; overflow:hidden;">
+                <img src="daily story teller/research 2.png" style="width:100%; height:100%; object-fit:cover;" alt="Research Data 2">
+              </div>
+
+              <!-- Research Image 3 -->
+              <div class="project-image" style="flex:1; height:250px; border: 1px solid #cbd5e1; border-radius:10px; overflow:hidden;">
+                <img src="daily story teller/research 3.png" style="width:100%; height:100%; object-fit:cover;" alt="Research Data 3">
+              </div>
+            </div>
+
+            <!-- Source Links -->
+            <div style="font-size: 13px; margin-bottom: 16px; color:#475569;">
+              <strong>Sources:</strong>
+              <br>
+              • Pew Research Center – Parenting Children in the Age of Screens:
+              <a href="https://www.pewresearch.org/internet/2020/07/28/parenting-children-in-the-age-of-screens/" target="_blank" style="color:#2563eb; text-decoration:none;">View Source</a>
+              <br>
+              • Common Sense Media – The Common Sense Census (Kids & Screen Time):
+              <a href="https://www.commonsensemedia.org/research/the-common-sense-census-media-use-by-tweens-and-teens" target="_blank" style="color:#2563eb; text-decoration:none;">View Source</a>
+              <br>
+              • NPR & Edison Research – Smart Audio Report (Kids + Voice Assistant Usage):
+              <a href="https://www.nationalpublicmedia.com/insights/smart-audio-report/" target="_blank" style="color:#2563eb; text-decoration:none;">View Source</a>
+            </div>
+
+            <!-- Key Insights Box -->
+            <div style="padding: 16px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc;">
+              <strong>Key Insights:</strong>
+              <ul style="margin: 8px 0 0; padding-left: 18px;">
+                <li>Children prefer interactive content over passive content like videos or audiobooks.</li>
+                <li>Kids engage more when visuals, characters, and voice interaction are included in learning activities.</li>
+                <li>Parents want safe, educational, and creativity-boosting digital platforms for their children.</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 7. User Personas -->
+          <section id="personas" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;">User Personas</h2>
+
+            <!-- Image Holders (2) -->
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+              <div style="flex:1; height:300px;  border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;"><img src="daily story teller/9-year-old-boy.jpg" style="width: 100%;height: 100%; object-fit:cover;"></div>
+              <div style="flex:1; height:300px;  border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;"><img src="daily story teller/parent.jpg" style="width: 100%;height: 100%; object-fit:cover;"></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+                <h3 style="margin: 0 0 8px; font-size: 18px; color:#111827;">Avi (Age 9) — Kid</h3>
+                <ul style="margin: 0; padding-left: 18px;">
+                  <li>Likes cartoons and drawing.</li>
+                  <li>Short attention span; prefers interactive activities.</li>
+                  <li>Motivated by badges and streaks.</li>
+                </ul>
+              </div>
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+                <h3 style="margin: 0 0 8px; font-size: 18px; color:#111827;">Priya — Parent</h3>
+                <ul style="margin: 0; padding-left: 18px;">
+                  <li>Wants safe, ad-free, learning-focused apps.</li>
+                  <li>Prefers simple controls and progress tracking.</li>
+                  <li>Values offline options and privacy.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- 8. Define -->
+          <section id="define" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;">Define</h2>
+
+            <!-- Problem Summary -->
+            <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fafafa; margin-bottom: 16px;">
+              <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">Problem Summary</h3>
+              <p style="margin: 0; color:#475569;">
+                Children spend most of their screen time passively consuming content (videos, games, and cartoons) rather than creating or expressing themselves. 
+                Parents struggle to find safe, educational platforms that encourage creativity and habit-building. 
+                There is a need for an engaging and guided storytelling experience that helps kids create, learn, and build confidence.
+              </p>
+            </div>
+
+            <!-- Opportunity Statement -->
+            <div style="padding: 16px; border-left: 4px solid #2563eb; border-radius: 8px; background: #eff6ff; margin-bottom: 16px;">
+              <p style="margin: 0; color:#1e3a8a; font-weight: 500;">
+                <strong>Opportunity:</strong> Transform passive screen time into an active, creative learning experience for children through guided and interactive storytelling.
+              </p>
+            </div>
+
+            <!-- How Might We -->
+            <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc; margin-bottom: 16px;">
+              <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">How Might We?</h3>
+              <ul style="margin: 6px 0 0; padding-left: 18px; color:#475569;">
+                <li>How might we make storytelling fun, guided, and interactive for kids?</li>
+                <li>How might we encourage children to build a daily creative habit?</li>
+                <li>How might we give parents confidence that their child's screen time is safe, educational, and meaningful?</li>
+              </ul>
+            </div>
+
+            <!-- Pain Points & Needs -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+              <!-- Pain Points -->
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+                <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">User Pain Points</h3>
+                <ul style="margin: 6px 0 0; padding-left: 18px; color:#475569;">
+                  <li>Most apps encourage passive watching rather than creation.</li>
+                  <li>Kids often lose interest in long or text-heavy activities.</li>
+                  <li>Parents lack safe & ad-free learning platforms.</li>
+                  <li>Limited tools for kids to express creativity independently.</li>
+                </ul>
+              </div>
+
+              <!-- Needs -->
+              <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px;">
+                <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">User Needs</h3>
+                <ul style="margin: 6px 0 0; padding-left: 18px; color:#475569;">
+                  <li>Guided prompts and visual storytelling support.</li>
+                  <li>Interactive elements: voice, images, stickers & characters.</li>
+                  <li>Rewards and progress streaks for motivation.</li>
+                  <li>Safe environment with parental controls.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- 9. Ideation -->
+          <section id="ideation" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;">Ideation</h2>
+
+            <!-- Brainstorming summary -->
+            <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background:#ffffff; margin-bottom: 12px;">
+              <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">Brainstorming &amp; Crazy 8s</h3>
+              <p style="margin: 0; color:#475569;">
+                I ran a quick divergent session (20 mins) and a Crazy-8s sketch round to explore ways to turn passive screen time
+                into creative storytelling. Ideas were grouped by creation method (voice / visual / text) and motivation (rewards / streaks).
+              </p>
+            </div>
+
+            <!-- Image Holders (3) -->
+            <div style="display:flex; gap:10px; margin-bottom:12px;">
+              <div style="flex:1; height:400px; width: 500px;  display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b; border:1px solid #000000;">
+                <img src="daily story teller/crazy 8.jpg" style="width: 100%; height: 100%; object-fit:cover;">
+              </div>
+              
+              <div style="flex:1; height:400px; border:1px solid #000000; display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/Brainstroming.png" style="width:100%; height:100%;">
+              </div>
+            </div>
+
+            <!-- Concept Shortlist -->
+            <div style="margin-bottom: 12px;">
+              <h3 style="margin: 0 0 8px; font-size: 18px; color:#111827;">Concept Shortlist</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+                <!-- Concept 1 -->
+                <div style="border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#fafafa;">
+                  <div style="font-weight:700; margin-bottom:6px; color:#111827;">C1 — Guided Prompts</div>
+                  <p style="margin:0 0 8px; color:#475569;">Daily prompt cards with visual cues help kids start quickly and reduce blank-page anxiety.</p>
+                  <div style="font-size:12px; color:#64748b;">Pros: fast start, repeatable • Cons: needs variety</div>
+                </div>
+                <!-- Concept 2 -->
+                <div style="border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#fafafa;">
+                  <div style="font-weight:700; margin-bottom:6px; color:#111827;">C2 — Voice-to-Story</div>
+                  <p style="margin:0 0 8px; color:#475569;">Kids narrate; app transcribes and builds a simple storyboard with stickers and scenes.</p>
+                  <div style="font-size:12px; color:#64748b;">Pros: accessible for younger kids • Cons: noisy env. issues</div>
+                </div>
+                <!-- Concept 3 -->
+                <div style="border:1px solid #e5e7eb; border-radius:12px; padding:14px; background:#fafafa;">
+                  <div style="font-weight:700; margin-bottom:6px; color:#111827;">C3 — Build-a-Story (Cards)</div>
+                  <p style="margin:0 0 8px; color:#475569;">Drag-and-drop character, setting, and plot cards to compose a story path.</p>
+                  <div style="font-size:12px; color:#64748b;">Pros: playful, visual • Cons: needs curated packs</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selection Rationale -->
+            <div style="padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background:#f8fafc; margin-bottom: 12px;">
+              <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">Why these concepts?</h3>
+              <p style="margin: 0; color:#475569;">
+                Mapped against research needs (fun, guided, low-friction, parental safety), these concepts balance
+                <strong>ease of creation</strong> (prompts &amp; voice) with <strong>playful control</strong> (cards), supporting habit building.
+              </p>
+            </div>
+
+            <!-- Key Solution Features -->
+            <div style="padding: 16px; border: 1px dashed #cbd5e1; border-radius: 12px; background: #f8fafc;">
+              <strong>Key Solution Features (shortlist):</strong>
+              <ul style="margin: 8px 0 0; padding-left: 18px;">
+                <li>Daily guided prompts + templates</li>
+                <li>Voice narration → auto text + stickers</li>
+                <li>Drag-and-drop story cards (character / setting / plot)</li>
+                <li>Rewards, badges, and streaks for motivation</li>
+                <li>Parent dashboard with review &amp; controls</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 10. Information Architecture & User Flow -->
+          <section id="user-flow" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;">10) Information Architecture & User Flow</h2>
+
+            <p style="margin: 0 0 10px; color:#475569;">
+              Based on the defined needs, I mapped the core flow to ensure children can start creating a story with minimal friction. 
+              The focus was on simplicity (3–5 steps), clear guidance, and reward-based completion to encourage a creative routine.
+            </p>
+
+            <!-- Image Holders (2) -->
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:600px; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/Screenshot 2025-11-09 212642.png" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+
+            <!-- Primary Flow -->
+            <div style="padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fafafa; margin-bottom: 14px;">
+              <h3 style="margin: 0 0 6px; font-size: 18px; color:#111827;">Primary User Flow — Create a Story</h3>
+              <ol style="margin: 6px 0 0; padding-left: 20px; color:#475569;">
+                <li>Open App → Select "Start Story"</li>
+                <li>Choose Format: Write / Voice / Visual Cards</li>
+                <li>Guided Prompts + Create Story</li>
+                <li>Review & Edit</li>
+                <li>Save → Earn Reward or Streak</li>
+                <li>(Optional) Share with Parent Approval</li>
+              </ol>
+            </div>
+          </section>
+
+          <!-- 11. Design System -->
+          <section id="design-system" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;">Design System</h2>
+
+            <!-- Image Holders (3) -->
+            <div style="border: 1px solid #e5e7eb;  padding: 16px;">
+              <div style="font-weight: 700; margin-bottom: 6px;">Typography</div>
+              <div style="flex:1; height:100%; width: 100%; border:1px dashed #94a3b8; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;"><img src="daily story teller/typography.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+              <div style="border: 1px solid #e5e7eb; padding: 16px;">
+                <div style="border: 1px solid #e5e7eb;  padding: 16px;">
+                  <div style="font-weight: 700; margin-bottom: 6px;">Colors</div>
+                  <div style="flex:1; height:100%; width: 100%; border:1px dashed #94a3b8; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;"><img src="daily story teller/colors.png" style="overflow: hidden; width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 12. Wireframes -->
+          <section id="wireframes" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;"> Wireframes</h2>
+
+            <!-- Image Holders (3) -->
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/WhatsApp wf.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/wireframe 4-5.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8;
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/wireframe 6-9.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/wireframe 10-12.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+          </section>
+
+          <!-- 13. Final UI Screens -->
+          <section id="final-ui" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;"> Final UI Screens</h2>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/HI-FI 5.png" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/HI-FI 10.png" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8; 
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/HI-FI 15.png" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; margin: 12px 0 16px;">
+              <div style="flex:1; height:100%; border:1px dashed #94a3b8;
+                          display:flex; align-items:center; justify-content:center; font-size:13px; color:#64748b;">
+                <img src="daily story teller/hi-fi 16,17.png" style="width: 100%;height: 100%; object-fit: cover;" >
+              </div>
+            </div>
+
+            <ol style="margin: 0; padding-left: 18px;">
+              <li>Onboarding</li>
+              <li>Home Screen</li>
+              <li>Select Story Type</li>
+              <li>Create Story (Write / Add Image / Voice)</li>
+              <li>Review &amp; Save</li>
+              <li>Rewards &amp; Streak</li>
+            </ol>
+          </section>
+
+          <!-- 15. Final Outcome -->
+          <section id="outcomes" style="margin-bottom: 40px;">
+            <h2 style="font-size: 28px; margin: 0 0 12px; color:#0f172a;"> Final Outcome </h2>
+
+            <p style="margin: 0 0 8px;">The app flow enables kids to quickly start creating with guidance, while parents get safety and oversight.</p>
+            <ul style="margin: 0; padding-left: 18px;">
+              <li>Focus on <strong>guided creation</strong> over passive consumption resonates with kids.</li>
+              <li>Small interaction tweaks (font size, fewer steps) drive completion.</li>
+              <li>Designing for kids requires <strong>clarity, feedback, and delight</strong> in every step.</li>
+            </ul>
+          </section>
+
+          <!-- 16. Thank You -->
+          <section id="thank-you" style="margin-bottom: 12px; text-align: center;">
+            <h2 style="font-size: 28px; margin: 0 0 10px; color:#0f172a;"> Thank You</h2>
+            <p style="margin: 0 0 12px; color:#475569;">Thanks for your time! Want to see the prototype or next project?</p>
+            <div>
+ <video autoplay muted loop playsinline  onclick="this.paused ? this.play() : this.pause()"style="width: 100%;
+  height: 100%;
+  object-fit: contain;  /* use cover if you want to crop edges */
+  background: #e0d6c2;
+  display: block;">
+  <source src="daily story teller/Screen Recording 2025-11-09 183846.mp4" type="video/mp4" style="width: 100%;
+  height: 100%;
+  object-fit: contain;  /* use cover if you want to crop edges */
+  background: #e0d6c2;
+  display: block;">
+</video>
+
+
+</div>
+
+          </section>
+        </div>
+      </div>
+      
+      <!-- Design Analysis Tab -->
+      <div id="design-analysis" class="tab-content">
+        
+        <section class="wcag-section">
+  <!-- Combo A: Yellow on Teal (#FFD45C on #11547E) — 5.71:1 -->
+  <article class="contrast-card">
+    <header class="card-head">
+      <h2>Contrast Check – Combo A</h2>
+      <div class="swatches">
+        <span class="swatch" style="--c:#FFD45C" aria-label="Foreground #FFD45C"></span>
+        <span class="swatch" style="--c:#11547E" aria-label="Background #11547E"></span>
+      </div>
+    </header>
+
+    <p class="meta">
+      <strong>Foreground:</strong> #FFD45C &nbsp; | &nbsp; <strong>Background:</strong> #11547E
+      <span class="ratio">Contrast Ratio: <b>5.71:1</b></span>
+    </p>
+
+    <!-- Preview block -->
+    <div class="preview" style="--bg:#11547E; --fg:#FFD45C;">
+      <div class="sample normal">The five boxing wizards jump quickly.</div>
+      <div class="sample large"><strong>The five boxing wizards jump quickly.</strong></div>
+      <div class="sample ui">
+        <span class="star" aria-hidden="true">★</span>
+        <input class="fake-input" value="Text Input" readonly />
+      </div>
+    </div>
+
+    <!-- WCAG results -->
+    <div class="results">
+      <div class="block">
+        <h3>Normal Text</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+          <div>WCAG AAA: <span class="badge fail">Fail</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Large Text</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Graphical Objects &amp; UI Components</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Combo B: White on Teal (#FFFFFF on #11547E) — 8.09:1 -->
+  <article class="contrast-card">
+    <header class="card-head">
+      <h2>Contrast Check – Combo B</h2>
+      <div class="swatches">
+        <span class="swatch" style="--c:#FFFFFF" aria-label="Foreground #FFFFFF"></span>
+        <span class="swatch" style="--c:#11547E" aria-label="Background #11547E"></span>
+      </div>
+    </header>
+
+    <p class="meta">
+      <strong>Foreground:</strong> #FFFFFF &nbsp; | &nbsp; <strong>Background:</strong> #11547E
+      <span class="ratio">Contrast Ratio: <b>8.09:1</b></span>
+    </p>
+
+    <!-- Preview block -->
+    <div class="preview" style="--bg:#11547E; --fg:#FFFFFF;">
+      <div class="sample normal">The five boxing wizards jump quickly.</div>
+      <div class="sample large"><strong>The five boxing wizards jump quickly.</strong></div>
+      <div class="sample ui">
+        <span class="star" aria-hidden="true">★</span>
+        <input class="fake-input" value="Text Input" readonly />
+      </div>
+    </div>
+
+    <!-- WCAG results -->
+    <div class="results">
+      <div class="block">
+        <h3>Normal Text</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Large Text</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+          <div>WCAG AAA: <span class="badge pass">Pass</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Graphical Objects &amp; UI Components</h3>
+        <div class="rows">
+          <div>WCAG AA: <span class="badge pass">Pass</span></div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<style>
+/* --- WCAG Contrast Cards Styles --- */
+.wcag-section{
+  display:grid;
+  gap:28px;
+  margin:24px 0 8px;
+}
+.contrast-card{
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:16px 18px;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+}
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.card-head h2{
+  font-size:18px;
+  margin:0;
+}
+.swatches{
+  display:flex; gap:8px;
+}
+.swatch{
+  width:22px; height:22px; border-radius:6px; background:var(--c);
+  outline:1px solid #d1d5db; box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);
+}
+.meta{
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  font-size:13px; color:#374151; margin:8px 0 12px;
+}
+.ratio{ margin-left:auto; background:#f3f4f6; padding:6px 10px; border-radius:8px; }
+
+.preview{
+  background:var(--bg); color:var(--fg);
+  border-radius:10px; padding:18px;
+  display:grid; gap:12px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.sample.normal{ font-size:18px; line-height:1.45; text-align:center; }
+.sample.large{ font-size:24px; line-height:1.35; text-align:center; }
+.sample.ui{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.star{ font-size:26px; line-height:1; }
+.fake-input{
+  background:#fff; color:#111827; border:2px solid currentColor;
+  border-radius:4px; padding:6px 10px; width:180px; font:inherit;
+}
+
+.results{
+  display:grid; grid-template-columns: repeat(3, 1fr);
+  gap:16px; margin-top:14px;
+}
+.results .block h3{
+  margin:0 0 6px; font-size:16px; color:#991b1b; border-bottom:2px solid #e5a3a3;
+  padding-bottom:4px;
+}
+.rows{ display:grid; gap:6px; font-size:14px; }
+.badge{
+  display:inline-block; padding:2px 8px; border-radius:999px;
+  font-size:12px; font-weight:700; line-height:1.6; vertical-align:middle;
+  color:#fff;
+}
+.badge.pass{ background:#15803d; }   /* green */
+.badge.fail{ background:#b91c1c; }   /* red */
+
+@media (max-width: 800px){
+  .results{ grid-template-columns:1fr; }
+  .ratio{ margin-left:0; }
+}
+</style>
+<!-- =========================
+  TYPOGRAPHY & COLOR — KIDS APP
+  Font: Boogaloo (Display) + System UI (Body)
+  Palette: Teal #11547E, Yellow #FFD45C, White #FFFFFF
+========================== -->
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
+
+<section class="type-color-section">
+
+  <!-- WHY BOOGALOO -->
+  <article class="doc-card">
+    <h2>Typography Choice — Boogaloo</h2>
+    <p class="lede">
+      <strong>Why:</strong> Boogaloo has a friendly, rounded, hand-lettered feel that reads as playful and approachable for kids.
+      Its wide forms and open counters support quick recognition at a glance—ideal for headlines, tabs, and labels in a story-creation app.
+    </p>
+    <ul class="bullets">
+      <li><b>Expressive headlines:</b> The bubbly shapes signal fun without being chaotic.</li>
+      <li><b>Clear letterforms:</b> High x-height & open counters aid early readers.</li>
+      <li><b>Distinct from body text:</b> Keeps hierarchy obvious (playful display vs. neutral body).</li>
+    </ul>
+  </article>
+
+  <!-- HOW WE USE IT -->
+  <article class="doc-card">
+    <h2>How We Use It</h2>
+    <ul class="bullets">
+      <li><b>Display only:</b> Boogaloo for H1–H3, tabs, badges, and key CTAs.</li>
+      <li><b>Body:</b> System UI stack for paragraphs, descriptions, and long reads.</li>
+      <li><b>Sizes:</b> Large, roomy type with generous line height for tap & read comfort.</li>
+      <li><b>Accessibility rule:</b> Yellow on teal (<code>#FFD45C</code> on <code>#11547E</code>) is used only for <b>large text and graphics</b> (WCAG AA passes at 5.71:1 for large text). For normal text, use white on teal (8.09:1).</li>
+    </ul>
+
+    <div class="grid-2 demo-block">
+      <!-- Headline / Display Examples -->
+      <section class="panel teal">
+        <h3 class="kicker">Display Text (Boogaloo)</h3>
+        <h1 class="display white">Create Your Story</h1>
+        <h2 class="display yellow large-only">Magic Words Unlocked</h2>
+        <p class="note">
+          <b>White on Teal</b> (8.09:1) — use for all headings and normal text.<br>
+          <b>Yellow on Teal</b> (5.71:1) — use only for big, bold emphasis (≥ 24px regular or ≥ 19px bold).
+        </p>
+      </section>
+
+      <!-- Body / UI Examples -->
+      <section class="panel light">
+        <h3 class="kicker">Body & UI (System UI)</h3>
+        <p class="body">
+          Kids can pick characters, places, and feelings to build a fun story. Parents get safe controls.
+        </p>
+
+        <div class="ui-row">
+          <button class="btn-primary">
+            Start Story
+          </button>
+
+          <button class="btn-outline">
+            Browse Library
+          </button>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag teal">Ages 5–12</span>
+          <span class="tag yellow large-only">NEW</span>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <!-- SPEC & TOKENS -->
+  <article class="doc-card">
+    <h2>Type Scale & Color Tokens</h2>
+
+    <div class="grid-2">
+      <section>
+        <h3 class="kicker">Type Scale</h3>
+        <div class="type-sample">
+          <div class="t t-display">H1 / Display — 40/44 — Boogaloo</div>
+          <div class="t t-title">H2 / Title — 28/32 — Boogaloo</div>
+          <div class="t t-sub">H3 / Section — 22/26 — Boogaloo</div>
+          <div class="t t-body">Body — 16/24 — System UI</div>
+          <div class="t t-label">Label/CTA — 18/22 — Boogaloo (All-Caps optional)</div>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="kicker">Color Tokens</h3>
+        <div class="swatch-row">
+          <span class="swatch" style="--c:#11547E"></span>
+          <div class="swatch-meta">
+            <b>--c-teal-700</b> <code>#11547E</code><br>
+            Primary surfaces, headers, nav bars.
+          </div>
+        </div>
+
+        <div class="swatch-row">
+          <span class="swatch" style="--c:#FFD45C"></span>
+          <div class="swatch-meta">
+            <b>--c-sun-400</b> <code>#FFD45C</code><br>
+            Accents, stars, badges, <b>large</b> display text only on teal.
+          </div>
+        </div>
+
+        <div class="swatch-row">
+          <span class="swatch" style="--c:#FFFFFF; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1)"></span>
+          <div class="swatch-meta">
+            <b>--c-white</b> <code>#FFFFFF</code><br>
+            Primary text on teal for max contrast.
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="callout">
+      <b>WCAG Note:</b> White on Teal (8.09:1) passes AA/AAA for normal text. Yellow on Teal (5.71:1) passes AA for <b>large text</b> and graphics only—use for big headings, icons, or badges, not for paragraphs.
+    </div>
+  </article>
+
+</section>
+
+<style>
+/* Base */
+:root{
+  --c-teal-700:#11547E;
+  --c-sun-400:#FFD45C;
+  --c-white:#FFFFFF;
+
+  --radius:16px;
+  --shadow:0 10px 28px rgba(0,0,0,.08);
+}
+
+.type-color-section{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  display: grid; gap: 28px; margin: 28px 0;
+}
+.doc-card{
+  background:#fff; border:1px solid #e5e7eb; border-radius: var(--radius);
+  padding:20px; box-shadow: var(--shadow);
+}
+.doc-card h2{ margin:0 0 10px; font-size:22px; }
+.lede{ margin:6px 0 12px; font-size:15px; color:#374151; }
+.bullets{ margin:0; padding-left:18px; color:#374151; line-height:1.6; }
+.bullets b{ color:#111827; }
+.kicker{
+  text-transform:uppercase; letter-spacing:.08em; font-size:12px; color:#6b7280; margin:0 0 8px;
+}
+
+/* Demo panels */
+.grid-2{ display:grid; gap:18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px){ .grid-2{ grid-template-columns:1fr; } }
+
+.panel{
+  border-radius:14px; padding:18px; min-height: 180px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.panel.teal{ background: var(--c-teal-700); color: var(--c-white); }
+.panel.light{ background:#f8fafc; }
+
+.display{ font-family:"Boogaloo", system-ui, sans-serif; line-height:1.1; }
+.white{ color: var(--c-white); }
+.yellow{ color: var(--c-sun-400); }
+
+/* Large-only guard — ensures yellow-on-teal used only when accessible */
+.large-only{
+  font-size: 28px; line-height: 1.15; font-weight: 700;
+}
+
+/* Body & UI */
+.body{ margin:8px 0 14px; color:#111827; }
+.ui-row{ display:flex; gap:10px; flex-wrap:wrap; }
+
+button{ font: inherit; }
+.btn-primary{
+  font-family:"Boogaloo", system-ui, sans-serif;
+  background: var(--c-teal-700); color: var(--c-white);
+  border: none; padding: 10px 16px; border-radius: 12px;
+  box-shadow: 0 4px 0 rgba(0,0,0,.12);
+}
+.btn-primary:hover{ filter: brightness(1.05); }
+
+.btn-outline{
+  font-family:"Boogaloo", system-ui, sans-serif;
+  background: #fff; color: var(--c-teal-700);
+  border: 2px solid var(--c-teal-700); padding: 8px 14px; border-radius: 12px;
+}
+
+.tag-row{ display:flex; gap:8px; margin-top:12px; }
+.tag{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:6px 10px; border-radius:999px; font-family:"Boogaloo", system-ui, sans-serif;
+}
+.tag.teal{ background: var(--c-teal-700); color: var(--c-white); }
+.tag.yellow{ background: var(--c-sun-400); color: #3a2f00; }
+
+/* Scale preview */
+.type-sample{ display:grid; gap:8px; }
+.t{ padding:8px 10px; border-radius:10px; background:#f3f4f6; }
+.t-display{ font-family:"Boogaloo", system-ui, sans-serif; font-size:40px; line-height:44px; }
+.t-title{ font-family:"Boogaloo", system-ui, sans-serif; font-size:28px; line-height:32px; }
+.t-sub{ font-family:"Boogaloo", system-ui, sans-serif; font-size:22px; line-height:26px; }
+.t-body{ font-size:16px; line-height:24px; }
+.t-label{ font-family:"Boogaloo", system-ui, sans-serif; font-size:18px; line-height:22px; }
+
+/* Swatches */
+.swatch-row{ display:flex; align-items:center; gap:12px; margin:10px 0; }
+.swatch{
+  width:28px; height:28px; border-radius:8px; background: var(--c);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.08);
+}
+.swatch-meta{ font-size:14px; color:#374151; }
+
+/* Callout */
+.callout{
+  margin-top:14px; background:#fff7ed; color:#7c2d12; border:1px solid #fdba74;
+  border-radius:12px; padding:12px 14px;
+}
+</style>
+      </div>
+      
+      <!-- Learnings Tab -->
+      <div id="learnings" class="tab-content">
+        
+        <section id="daily-story-teller-learnings" aria-labelledby="dst-learnings-title">
+  <h2 id="dst-learnings-title">Key Learnings from the Daily Story Teller App</h2>
+
+  <ol class="learnings">
+    <li>
+      <h3> Understanding Your Audience (Kids + Parents)</h3>
+      <p>Learned how to design for kids aged 5–12 with simple navigation, bold visuals, and large tap areas.</p>
+      <p>Discovered that parents influence the usage, so safety, privacy, and a meaningful learning outcome are critical.</p>
+    </li>
+
+    <li>
+      <h3> Crafting a Fun + Educational User Flow</h3>
+      <p>Built a flow that makes story creation feel like a game, not a task.</p>
+      <p>Balanced creativity + structure by guiding kids through prompts (Theme → Characters → Plot → Output).</p>
+    </li>
+
+    <li>
+      <h3> UI/UX Principles for Kids’ Apps</h3>
+      <p>Applied psychology behind kids’ apps:</p>
+      <ul>
+        <li>High contrast colors</li>
+        <li>Friendly shapes and illustrations</li>
+        <li>Rewards, badges, and motivation</li>
+      </ul>
+      <p>Prioritized reduced cognitive load with fewer buttons and guided screens.</p>
+    </li>
+
+    <li>
+      <h3> Visual Design for Engagement</h3>
+      <p>Learned how illustrations, mascots, and micro-animations improve user engagement.</p>
+      <p>Designed a visually rich interface while keeping UI non-overwhelming for kids.</p>
+    </li>
+
+    <li>
+      <h3> Voice + Interactive Learning</h3>
+      <p>Integrated multi-modal learning:</p>
+      <ul>
+        <li>Reading</li>
+        <li>Listening (text-to-speech)</li>
+        <li>Voice recording to narrate stories</li>
+      </ul>
+      <p>Enhanced learning beyond just reading.</p>
+    </li>
+
+    <li>
+      <h3> Gamification Strategy</h3>
+      <p>Used points, badges, streaks, and challenges to build habit-forming learning.</p>
+      <p>Learned how to convert passive consumption → active participation.</p>
+    </li>
+
+    <li>
+      <h3> Content Structure and Safety</h3>
+      <p>Built understanding of:</p>
+      <ul>
+        <li>Age-appropriate content filtering</li>
+        <li>Parental controls</li>
+        <li>No ads / safe environment</li>
+      </ul>
+      <p>Focused on keeping the app child-safe and educational.</p>
+    </li>
+
+    <li>
+      <h3> Design System for Kids’ Products</h3>
+      <p>Developed a mini-design system for consistency:</p>
+      <ul>
+        <li>Color palette for children’s apps</li>
+        <li>Typography for young reading levels</li>
+        <li>Iconography rules (clear, bold, high-contrast)</li>
+      </ul>
+    </li>
+
+    <li>
+      <h3> Accessibility</h3>
+      <p>Learned to design for early readers and children with learning challenges:</p>
+      <ul>
+        <li>Voice assistance</li>
+        <li>Larger fonts and touch targets</li>
+        <li>Visual cue–based navigation</li>
+      </ul>
+    </li>
+
+    <li>
+      <h3> Case Study Storytelling</h3>
+      <p>This project also helped you understand how to present a UX case study:</p>
+      <p>Problem → Research → Ideation → Wireframes → UI → Testing → Learnings</p>
+    </li>
+  </ol>
+</section>
+      </div>
+      <!--
+      
+      <div id="design" class="tab-content">
+        <h2>Design Process & Deliverables</h2>
+        <p>The design process for this project followed a structured approach with clear milestones and deliverables at each stage.</p>
+        <p><strong>Research Phase:</strong></p>
+        <ul>
+          <li>Competitive analysis of 12 banking applications</li>
+          <li>User interviews with 25 participants</li>
+          <li>Heuristic evaluation of existing application</li>
+        </ul>
+        <p><strong>Design Phase:</strong></p>
+        <ul>
+          <li>Information architecture and user flow diagrams</li>
+          <li>Low-fidelity wireframes for key screens</li>
+          <li>Interactive prototypes for usability testing</li>
+          <li>High-fidelity mockups with complete design system</li>
+        </ul>
+        <p><strong>Final Deliverables:</strong></p>
+        <ul>
+          <li>Complete design system with component library</li>
+          <li>Annotated design specifications for development</li>
+          <li>Interactive prototype demonstrating key user flows</li>
+          <li>Accessibility audit report</li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    // Function to toggle the sidebar (YouTube-style)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const body = document.body;
+      const overlay = document.getElementById('sidebarOverlay');
+
+      // Mobile behavior: slide overlay in/out
+      if (window.innerWidth <= 900) {
+        const isOpen = sidebar.classList.contains('open');
+        if (isOpen) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('show');
+        } else {
+          sidebar.classList.add('open');
+          overlay.classList.add('show');
+        }
+      } else {
+        // Desktop behavior: YouTube-like collapse (icons only)
+        sidebar.classList.toggle('collapsed');
+        body.classList.toggle('menu-collapsed');
+      }
+    }
+
+    // Initialize
+    const hamburgerBtn = document.getElementById('hamburger');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    hamburgerBtn.addEventListener('click', toggleSidebar);
+
+    // Close mobile overlay when overlay clicked
+    sidebarOverlay.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+
+    // Close mobile overlay with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('sidebar').classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+      }
+    });
+
+    // Ensure classes are in sensible state on resize
+    window.addEventListener('resize', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (window.innerWidth > 900) {
+        // Remove mobile-only states
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      } else {
+        // Keep collapsed state off on mobile so slide works
+        sidebar.classList.remove('collapsed');
+        document.body.classList.remove('menu-collapsed');
+      }
+    });
+
+    // Function to switch between tabs on projects page
+    function showTab(tabId, ev) {
+      if (ev) ev.preventDefault();
+
+      // Hide all panels
+      document.querySelectorAll('.tab-content').forEach(p => {
+        p.hidden = true;
+        p.classList.remove('active');
+      });
+
+      // Show selected panel
+      const panel = document.getElementById(tabId);
+      if (panel) {
+        panel.hidden = false;
+        panel.classList.add('active');
+      }
+
+      // Update active tab menu item
+      document.querySelectorAll('.project-menu li').forEach(li => li.classList.remove('active'));
+      const clickedLi =
+        ev?.target?.closest('li') ??
+        document.querySelector(`.project-menu li[onclick*="${tabId}"]`);
+      if (clickedLi) clickedLi.classList.add('active');
+    }
+  </script>
+</body>
+</html>

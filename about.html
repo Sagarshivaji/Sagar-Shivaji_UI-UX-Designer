@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Sagar Shivaji</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    
+    /* Newspaper-inspired color scheme */
+    :root {
+      --newsprint: #f8f8f8;
+      --headline: #222;
+      --accent: #100f0f;
+      --highlight: #ffffff;
+      --border: #000000;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hamburger menu button */
+    .hamburger-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #0e0e0e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(2,6,23,.2);
+      transition: left 0.3s ease;
+    }
+    
+    .hamburger-btn:hover {
+      background: #2a2a2a;
+    }
+    
+    /* Sidebar menu */
+    .menu {
+      background-color: #0e0e0e;
+      border-right: 2px solid var(--border);
+      box-shadow: 2px 0 5px var(--shadow);
+      padding: 20px;
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 90;
+      transition: transform 0.3s ease, width 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .menu.collapsed {
+      width: 140px;
+    }
+    
+    .menu ul {
+      list-style-type: none;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .menu ul li {
+      margin: 10px 0;
+      padding: 16px;
+      align-items: center;
+      background-color: var(--newsprint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    
+    .menu ul li:hover {
+      background-color: #e8e0cc;
+      transform: translateX(5px);
+    }
+    
+    .menu ul li a {
+      text-decoration: none;
+      color: var(--headline);
+      display: flex-start;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 500;
+    }
+    
+    .menu ul li a i {
+      color: var(--accent);
+      padding-left: 12px;
+      font-size: 1rem;
+    }
+    
+    .menu ul li a span {
+      padding-left: 4px;
+      transition: opacity 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .menu.collapsed ul li a span {
+        align-items: center;
+        justify-items: center;
+    }
+    
+    .menu.collapsed ul li a i {
+        display: flex;
+    }
+    
+    .menu-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      justify-content: center;
+    }
+    
+    .menu-header h2 {
+      color: white;
+      margin-left: 10px;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+    
+    .menu.collapsed .menu-header h2 {
+      opacity: 0;
+    }
+    
+    /* Main content area */
+    .main-content {
+      padding: 20px;
+      background-color: var(--newsprint);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      margin-left: 280px;
+      transition: margin-left 0.3s ease;
+      min-height: 100vh;
+      max-width: calc(100% - 280px);
+    }
+    
+    /* Newspaper header effect */
+    .main-content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent) 0%, #8b4513 100%);
+    }
+    
+    /* Hero section */
+    .hero {
+      display: flex;
+      height: 500px;
+      padding: 20px;
+      width: 100%;
+      background-color: var(--highlight);
+      margin-bottom: 30px;
+      border-radius: 4px;
+    }
+    
+    .content {
+      background-color: var(--newsprint);
+      width: 50%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px dashed var(--border);
+    }
+    
+    .content h1 {
+      font-size: 2.5rem;
+      color: var(--headline);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    
+    .content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .buttons button {
+      padding: 10px 20px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .buttons button:hover {
+      background-color: #6a0000;
+    }
+    
+    /* Hero image section */
+    .hero-image {
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--newsprint);
+    }
+    
+    .hero-image .image-placeholder {
+      width: 100%;
+      height: 100%;
+      background-color: #e0d6c2;
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-style: italic;
+      overflow: hidden;
+    }
+    
+    .hero-image .image-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* About Content Sections */
+    .about-section {
+      background-color: var(--highlight);
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 4px 8px var(--shadow);
+      margin-bottom: 30px;
+    }
+    
+    .about-section h2 {
+      margin-bottom: 20px;
+      color: var(--headline);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    
+    .about-section p {
+      margin-bottom: 15px;
+    }
+    
+    /* Skills Section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .skill-category {
+      background-color: var(--newsprint);
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    
+    .skill-category h3 {
+      margin-bottom: 15px;
+      color: var(--headline);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .skill-category h3 i {
+      color: var(--accent);
+    }
+    
+    .skill-list {
+      list-style: none;
+    }
+    
+    .skill-list li {
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .skill-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .skill-level {
+      color: var(--accent);
+      font-weight: bold;
+    }
+    
+    /* Drawings Gallery */
+    .drawings-section {
+      margin-top: 40px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    
+    .section-header h2 {
+      font-size: 1.8rem;
+      color: var(--headline);
+    }
+    
+    .drawings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .drawing-card {
+        
+      background-color: var(--highlight);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px var(--shadow);
+
+      
+    }
+    
+    
+    
+    .drawing-image {
+      height: 300px;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .drawing-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+
+    }
+    
+    
+    
+    .drawing-info {
+      padding: 15px;
+    }
+    
+    .drawing-info h3 {
+      margin-bottom: 10px;
+      color: var(--headline);
+    }
+    
+    .drawing-info p {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .drawing-date {
+      font-size: 0.8rem;
+      color: #999;
+      font-style: italic;
+    }
+    
+    /* Contact Info */
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background-color: var(--newsprint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--accent);
+      width: 30px;
+    }
+    
+    .contact-details h4 {
+      margin-bottom: 5px;
+      color: var(--headline);
+    }
+    
+    .contact-details p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .contact-details a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .contact-details a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Modal for enlarged drawings */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      margin-top: 2%;
+      border: 3px solid var(--highlight);
+      border-radius: 4px;
+    }
+    
+    .modal-info {
+      text-align: center;
+      color: white;
+      padding: 10px 0;
+    }
+    
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .close:hover {
+      color: #bbb;
+    }
+    
+    /* Mobile overlay */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease;
+      z-index: 85;
+    }
+    
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 900px) {
+      .menu {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      
+      .menu.open {
+        transform: translateX(0);
+      }
+      
+      .menu.collapsed {
+        transform: translateX(-100%);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        max-width: 100%;
+      }
+      
+      body.menu-collapsed .main-content {
+        margin-left: 100px;
+      }
+      
+      .hamburger-btn {
+        display: block;
+      }
+      
+      .hero {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .content, .hero-image {
+        width: 100%;
+      }
+      
+      .hero-image {
+        height: 300px;
+      }
+      
+      .drawings-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 2fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .menu ul li a {
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .menu ul li {
+        align-items: center;
+        justify-items: center;
+      }
+      .menu ul li a i {
+        margin-bottom: 0;
+        font-size: 1rem;
+      }
+      
+      .menu ul li a span {
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .drawings-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="hamburger-btn" id="hamburger" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  
+  <div class="menu" id="sidebar">
+    <div class="menu-header">
+      <h2>Sagar Shivaji</h2>
+    </div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+      <li><a href="Work.html"><i class="fas fa-project-diagram"></i> <span>Work</span></a></li>
+      <li><a href="about.html" class="active"><i class="fas fa-user"></i> <span>About</span></a></li>
+      <li><a href="resume.html"><i class="fas fa-file-alt"></i> <span>Resume</span></a></li>
+    </ul>
+  </div>
+  
+  <!-- About Page Content -->
+  <div class="main-content" id="about-page">
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="content">
+        <div>
+          <h1>About Me</h1>
+          <p>I'm a UX designer with a passion for creating meaningful experiences that blend creativity with functionality. My journey in design is complemented by my love for drawing, which helps me approach problems with a unique visual perspective.</p>
+          <p>When I'm not designing interfaces, you'll find me sketching, exploring new art techniques, or experimenting with different mediums to express ideas visually.</p>
+          <div class="buttons">
+            <button onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Back to Home</button>
+            <button onclick="window.location.href='#drawings'">View Drawings <i class="fas fa-palette"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="image-placeholder">
+          <img src="daily story teller/sagarshivaji_sq.JPG" alt="Sagar Shivaji" style="width:100%; height:100%; object-fit: cover; object-position: top;">
+        </div>
+      </div>
+    </div>
+    
+    <!-- My Story Section -->
+    <div class="about-section">
+      <h2>My Design Journey</h2>
+      <p>My path to UX design began with a fascination for how people interact with technology. I've always been curious about the psychology behind user behavior and how design can influence experiences in meaningful ways.</p>
+      <p>With a background that blends technical understanding with creative expression, I approach each project with empathy and attention to detail. I believe that great design should not only look beautiful but also feel intuitive and solve real problems.</p>
+      <p>My drawing practice informs my design work by training my eye for composition, balance, and visual storytelling. Whether I'm sketching user flows or creating illustrations, I'm always thinking about how to communicate ideas clearly and effectively.</p>
+    </div>
+    
+    <!-- Skills Section -->
+    <div class="about-section">
+      <h2>Skills & Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3><i class="fas fa-pencil-alt"></i> Design</h3>
+          <ul class="skill-list">
+            <li>User Experience Design <span class="skill-level"></span></li>
+            <li>User Interface Design <span class="skill-level"></span></li>
+            <li>Wireframing & Prototyping <span class="skill-level"></span></li>
+            <li>Design Systems <span class="skill-level"></span></li>
+            <li>Visual Design <span class="skill-level"></span></li>
+          </ul>
+        </div>
+        
+        <div class="skill-category">
+          <h3><i class="fas fa-search"></i> Research</h3>
+          <ul class="skill-list">
+            <li>User Research <span class="skill-level"></span></li>
+            <li>Usability Testing <span class="skill-level"></span></li>
+            <li>Competitive Analysis <span class="skill-level"></span></li>
+            <li>Persona Development <span class="skill-level"></span></li>
+            <li>Journey Mapping <span class="skill-level"></span></li>
+          </ul>
+        </div>
+        
+        <div class="skill-category">
+          <h3><i class="fas fa-tools"></i> Tools & Technical</h3>
+          <ul class="skill-list">
+            <li>Figma <span class="skill-level"></span></li>
+            <li>Adobe Creative Suite <span class="skill-level"></span></li>
+            <li>HTML/CSS <span class="skill-level"></span></li>
+            <li>Illustration <span class="skill-level"></span></li>
+            <li>Prototyping <span class="skill-level"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Drawings Gallery Section -->
+    <div class="about-section drawings-section" id="drawings">
+      <div class="section-header">
+        <h2>My Drawings & Sketches</h2>
+        <span style="color: var(--accent); font-style: italic;">Visual thinking in practice</span>
+      </div>
+      
+      <p>Drawing is my meditation and my method for exploring ideas. These sketches represent moments of inspiration, conceptual thinking, and pure creative expression.</p>
+      
+      <div class="drawings-grid">
+        <!-- Drawing 1 -->
+        <div class="drawing-card" >
+          <div class="drawing-image" >
+            <img src="Drawings/greek god.jpg" alt="Character Design Sketch" >
+          </div>
+          <div class="drawing-info">
+            <h3>Roman/Greek Sculpture</h3>
+            <p>Practice sketch emphasizing muscles, form, and cross-hatching.</p>
+            <div class="drawing-date"></div>
+          </div>
+        </div>
+        
+        <!-- Drawing 2 -->
+        <div class="drawing-card" >
+          <div class="drawing-image">
+            <img src="Drawings/buddha.jpg" alt="Architectural Study">
+          </div>
+          <div class="drawing-info">
+            <h3>Gautam Buddha – Calmness</h3>
+            <p>Focused on serenity, balance, and soft shading.</p>
+            <div class="drawing-date">February 2024</div>
+          </div>
+        </div>
+        
+        <!-- Drawing 3 -->
+        <div class="drawing-card" >
+          <div class="drawing-image">
+            <img src="Drawings/joker.jpg" alt="joker">
+          </div>
+          <div class="drawing-info">
+            <h3>Joker Portrait – Pencil + Shading Study</h3>
+            <p>Emotional expression and dramatic lighting practice.</p>
+            <div class="drawing-date">January 2024</div>
+          </div>
+        </div>
+        
+        <!-- Drawing 4 -->
+        <div class="drawing-card">
+          <div class="drawing-image">
+            <img src="Drawings/wendesday.jpg" alt="Joker">
+          </div>
+          <div class="drawing-info">
+            <h3>Side Profile Study – Pencil</h3>
+            <p>Study of facial proportions, hair texture, and soft shading.</p>
+            <div class="drawing-date">December 2023</div>
+          </div>
+        </div>
+        
+        <!-- Drawing 5 -->
+        <div class="drawing-card">
+          <div class="drawing-image">
+            <img src="Drawings/telugu singer.jpg" alt="Portrait Study">
+          </div>
+          <div class="drawing-info">
+            <h3>Singer Portrait</h3>
+            <p>Capturing emotion and stage presence.</p>
+            <div class="drawing-date">November 2023</div>
+          </div>
+        </div>
+        
+        <!-- Drawing 6 -->
+        <div class="drawing-card" onclick="openModal('drawing6')">
+          <div class="drawing-image">
+            <img src="Drawings/animal+human.jpg" alt="Abstract Composition">
+          </div>
+          <div class="drawing-info">
+            <h3>Mythical Forest Creature – Pencil Sketch</h3>
+            <p>A fantasy-inspired character study exploring texture and expression.</p>
+            <div class="drawing-date">October 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contact Section -->
+    <div class="about-section">
+      <h2>Get In Touch</h2>
+      <p>I'm always interested in new opportunities, creative collaborations, or just chatting about design and art.</p>
+      
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <div class="contact-details">
+            <h4>Email</h4>
+            <p>sagarshivaji6644@example.com</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <div class="contact-details">
+            <h4>Phone</h4>
+            <p>+91 9182703588</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="contact-details">
+            <h4>Location</h4>
+            <p>India</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="fas fa-file-alt"></i>
+          <div class="contact-details">
+            <h4>Resume</h4>
+            <p><a href="#" style="color: var(--accent); text-decoration: none;">Download PDF</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal for enlarged drawings -->
+  <div id="drawingModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div class="modal-info" id="modalCaption"></div>
+  </div>
+
+  <script>
+    // Function to toggle the sidebar (YouTube-style)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const body = document.body;
+      const overlay = document.getElementById('sidebarOverlay');
+
+      // Mobile behavior: slide overlay in/out
+      if (window.innerWidth <= 900) {
+        const isOpen = sidebar.classList.contains('open');
+        if (isOpen) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('show');
+        } else {
+          sidebar.classList.add('open');
+          overlay.classList.add('show');
+        }
+      } else {
+        // Desktop behavior: YouTube-like collapse (icons only)
+        sidebar.classList.toggle('collapsed');
+        body.classList.toggle('menu-collapsed');
+      }
+    }
+
+    // Initialize
+    const hamburgerBtn = document.getElementById('hamburger');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    hamburgerBtn.addEventListener('click', toggleSidebar);
+
+    // Close mobile overlay when overlay clicked
+    sidebarOverlay.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+
+    // Close mobile overlay with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('sidebar').classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+      }
+    });
+
+    // Ensure classes are in sensible state on resize
+    window.addEventListener('resize', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (window.innerWidth > 900) {
+        // Remove mobile-only states
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      } else {
+        // Keep collapsed state off on mobile so slide works
+        sidebar.classList.remove('collapsed');
+        document.body.classList.remove('menu-collapsed');
+      }
+    });
+
+    // Function to open modal with drawing
+    function openModal(drawingId) {
+      const modal = document.getElementById('drawingModal');
+      const modalImg = document.getElementById('modalImage');
+      const captionText = document.getElementById('modalCaption');
+      
+      // In a real implementation, you would use the actual image source
+      // For this example, we'll use placeholder behavior
+      modal.style.display = "block";
+      modalImg.src = "drawings/placeholder.jpg"; // Replace with actual image path
+      captionText.innerHTML = "Character Exploration - March 2024"; // Replace with actual caption
+    }
+    
+    // Function to close modal
+    function closeModal() {
+      document.getElementById('drawingModal').style.display = "none";
+    }
+    
+    // Close modal when clicking outside the image
+    window.onclick = function(event) {
+      const modal = document.getElementById('drawingModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

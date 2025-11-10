@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newspaper Portfolio - Resume</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    
+    /* Newspaper-inspired color scheme */
+    :root {
+      --newsprint: #f8f8f8;
+      --headline: #222;
+      --accent: #100f0f; /* Dark red for newspaper feel */
+      --highlight: #ffffff; /* Aged paper color */
+      --border: #000000;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hamburger menu button */
+    .hamburger-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: #0e0e0e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(2,6,23,.2);
+      transition: left 0.3s ease;
+    }
+    
+    .hamburger-btn:hover {
+      background: #2a2a2a;
+    }
+    
+    /* Sidebar menu */
+    .menu {
+      background-color: #0e0e0e;
+      border-right: 2px solid var(--border);
+      box-shadow: 2px 0 5px var(--shadow);
+      padding: 20px;
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 90;
+      transition: transform 0.3s ease, width 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .menu.collapsed {
+      width: 140px;
+    }
+    
+    .menu ul {
+      list-style-type: none;
+      padding: 10px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .menu ul li {
+      margin: 10px 0;
+      padding: 16px;
+      align-items: center;
+      background-color: var(--newsprint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    
+    .menu ul li:hover {
+      background-color: #e8e0cc;
+      transform: translateX(5px);
+    }
+    
+    .menu ul li a {
+      text-decoration: none;
+      color: var(--headline);
+      display: flex-start;
+      flex-direction: column;
+      font-weight: 500;
+    }
+    
+    .menu ul li a i {
+      color: var(--accent);
+      padding-left: 12px;
+      font-size: 1rem;
+    }
+    
+    .menu ul li a span {
+      padding-left: 4px;
+      transition: opacity 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .menu.collapsed ul li a span {
+        align-items: center;
+        justify-items: center;
+    }
+    
+    .menu.collapsed ul li a i {
+        display: flex;
+    }
+    
+    .menu-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      justify-content: center;
+    }
+    
+    .menu-header h2 {
+      color: white;
+      margin-left: 10px;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+    
+    .menu.collapsed .menu-header h2 {
+      opacity: 0;
+    }
+    
+    /* Main content area */
+    .main-content {
+      padding: 20px;
+      background-color: var(--newsprint);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      margin-left: 280px;
+      transition: margin-left 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    /* Newspaper header effect */
+    .main-content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent) 0%, #8b4513 100%);
+    }
+    
+    /* Resume header */
+    .resume-header {
+      display: flex;
+      padding: 30px;
+      background-color: var(--highlight);
+      margin-bottom: 30px;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    
+    .resume-info {
+      flex: 2;
+      padding-right: 30px;
+    }
+    
+    .resume-info h1 {
+      font-size: 2.5rem;
+      color: var(--headline);
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    
+    .resume-info h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: normal;
+      font-style: italic;
+    }
+    
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .contact-item i {
+      color: var(--accent);
+      margin-right: 10px;
+      width: 20px;
+    }
+    
+    .resume-photo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .resume-photo .photo-placeholder {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: #e0d6c2;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    /* Resume sections */
+    .resume-section {
+      background-color: var(--highlight);
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 10px;
+    }
+    
+    .section-header i {
+      color: var(--accent);
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+    
+    .section-header h2 {
+      font-size: 1.8rem;
+      color: var(--headline);
+    }
+    
+    /* Experience items */
+    .experience-item {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--border);
+    }
+    
+    .experience-item:last-child {
+      border-bottom: none;
+    }
+    
+    .experience-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .experience-title {
+      font-size: 1.3rem;
+      color: var(--headline);
+      font-weight: bold;
+    }
+    
+    .experience-company {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-style: italic;
+    }
+    
+    .experience-date {
+      color: #666;
+      font-style: italic;
+    }
+    
+    .experience-description {
+      margin-top: 10px;
+    }
+    
+    /* Skills section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .skill-category {
+      margin-bottom: 20px;
+    }
+    
+    .skill-category h3 {
+      font-size: 1.2rem;
+      color: var(--headline);
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+    }
+    
+    .skill-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .skill-tag {
+      background-color: var(--accent);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    /* Education section */
+    .education-item {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed var(--border);
+    }
+    
+    .education-item:last-child {
+      border-bottom: none;
+    }
+    
+    .education-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .education-degree {
+      font-size: 1.2rem;
+      color: var(--headline);
+      font-weight: bold;
+    }
+    
+    .education-school {
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    
+    .education-date {
+      color: #666;
+      font-style: italic;
+    }
+    
+    /* Download button */
+    .download-section {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+    }
+    
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 25px;
+      background-color: var(--accent);
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .download-btn:hover {
+      background-color: #6a0000;
+    }
+    
+    .download-btn i {
+      margin-right: 8px;
+    }
+    
+    /* Mobile overlay */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease;
+      z-index: 85;
+    }
+    
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 900px) {
+      .menu {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      
+      .menu.open {
+        transform: translateX(0);
+      }
+      
+      .menu.collapsed {
+        transform: translateX(-100%);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      body.menu-collapsed .main-content {
+        margin-left: 100px;
+      }
+      
+      .hamburger-btn {
+        display: block;
+      }
+      
+      .resume-header {
+        flex-direction: column;
+      }
+      
+      .resume-info {
+        padding-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      .resume-photo {
+        justify-content: flex-start;
+      }
+      
+      .experience-header, .education-header {
+        flex-direction: column;
+      }
+      
+      .experience-date, .education-date {
+        margin-top: 5px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .menu ul li a {
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .menu ul li {
+        align-items: center;
+        justify-items: center;
+      }
+      .menu ul li a i {
+        margin-bottom: 0;
+        font-size: 1rem;
+      }
+      
+      .menu ul li a span {
+        font-size: 1rem;
+      }
+      
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="hamburger-btn" id="hamburger" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  
+  <div class="menu" id="sidebar">
+    <div class="menu-header">
+      <h2>Sagar Shivaji</h2>
+    </div>
+    <ul>
+      <li><a href="index.html"><i class="fas fa-home"></i> <span>Home</span></a></li>
+      <li><a href="Work.html"><i class="fas fa-project-diagram"></i> <span>Work</span></a></li>
+      <li><a href="about.html"><i class="fas fa-user"></i> <span>About</span></a></li>
+      <li><a href="resume.html" class="active"><i class="fas fa-file-alt"></i> <span>Resume</span></a></li>
+    </ul>
+  </div>
+  
+  <!-- Resume Page Content -->
+  <div class="main-content" id="resume-page">
+    <!-- Resume Header -->
+    <div class="resume-header">
+      <div class="resume-info">
+        <h1>Sagar Shivaji</h1>
+        <h2>UX/UI Designer</h2>
+        <p>Passionate UX designer with a focus on creating intuitive, meaningful, and visually balanced experiences. Skilled in design systems, color theory, typography, and blending creativity with structure to turn insights into engaging user experiences.</p>
+        
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:sagarshivaji6644@gmail.com">sagarshivaji6644@gmail.com</a>
+
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+91 9182703588</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Hyderabad, India</span>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-linkedin"></i>
+            <a href="https://www.linkedin.com/in/sagar-shivaji-090904262/">Linkedin Profile</a>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-behance"></i>
+            <a href="https://www.behance.net/sagarshivaji">Behance</a>
+          </div>
+          
+        </div>
+      </div>
+      
+      <div class="resume-photo">
+        <div class="photo-placeholder">
+          <img src="daily story teller/sagarshivaji_sq.JPG" alt="Sagar Shivaji" style="width:100%; height:100%; object-fit: cover;">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Experience Section -->
+    <div class="resume-section">
+      <div class="section-header">
+        <i class="fas fa-briefcase"></i>
+        <h2>Education</h2>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Malla Reddy Institute of Technology and Science, Hyderabad</div>
+            <div class="experience-company">Btech in Computer Science and Engineering(AI and ML)</div>
+          </div>
+          <div class="experience-date">2021 - 2025</div>
+        </div>
+       
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Sri Chaitanya Junior College 2019-2021
+</div>
+            <div class="experience-company">Intermediate (Maths,Physics and Chemistry)</div>
+          </div>
+          <div class="experience-date">2019 - 2021</div>
+        </div>
+
+      </div>
+      
+      <div class="experience-item">
+        
+      </div>
+    </div>
+    
+    <!-- Skills Section -->
+    <div class="resume-section">
+      <div class="section-header">
+        <i class="fas fa-tools"></i>
+        <h2>Skills & Expertise</h2>
+      </div>
+      
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>UX/UI Design</h3>
+          <div class="skill-items">
+            <span class="skill-tag">User Research</span>
+            <span class="skill-tag">Wireframing</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag">Information Architecture</span>
+            <span class="skill-tag">Interaction Design</span>
+            <span class="skill-tag">Usability Testing</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Design Tools</h3>
+          <div class="skill-items">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Adobe XD</span>
+            <span class="skill-tag">Sketch</span>
+            <span class="skill-tag">Illustrator</span>
+            <span class="skill-tag">Photoshop</span>
+            <span class="skill-tag">InVision</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Research Methods</h3>
+          <div class="skill-items">
+            <span class="skill-tag">User Interviews</span>
+            <span class="skill-tag">Surveys</span>
+            <span class="skill-tag">Personas</span>
+            <span class="skill-tag">Journey Mapping</span>
+            <span class="skill-tag">A/B Testing</span>
+            <span class="skill-tag">Analytics</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Front-end Knowledge</h3>
+          <div class="skill-items">
+            <span class="skill-tag">HTML/CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Responsive Design</span>
+            <span class="skill-tag">Accessibility</span>
+            <span class="skill-tag">Design Systems</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Education Section -->
+     <!--
+    <div class="resume-section">
+      <div class="section-header">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Education</h2>
+      </div>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div>
+            <div class="education-degree">Master of Design in Interaction Design</div>
+            <div class="education-school">National Institute of Design, Ahmedabad</div>
+          </div>
+          <div class="education-date">2015 - 2017</div>
+        </div>
+        <p>Focused on human-computer interaction, user experience design, and design research methodologies. Graduated with distinction.</p>
+      </div>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div>
+            <div class="education-degree">Bachelor of Fine Arts in Graphic Design</div>
+            <div class="education-school">Sir J.J. Institute of Applied Art, Mumbai</div>
+          </div>
+          <div class="education-date">2011 - 2015</div>
+        </div>
+        <p>Specialized in visual communication, typography, and digital media. Completed thesis on "Emotional Design in Digital Interfaces".</p>
+      </div>
+    </div>-->
+    
+    <!-- Certifications Section -->
+    <div class="resume-section">
+      <div class="section-header">
+        <i class="fas fa-award"></i>
+        <h2>Certifications & Awards</h2>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Google UX Design Professional Certificate</div>
+            <div class="experience-company">Google / Coursera</div>
+          </div>
+          <div class="experience-date">2020</div>
+        </div>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Best UX Design - National Design Awards</div>
+            <div class="experience-company">Design Association of India</div>
+          </div>
+          <div class="experience-date">2019</div>
+        </div>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Accessibility for UX Designers</div>
+            <div class="experience-company">Interaction Design Foundation</div>
+          </div>
+          <div class="experience-date">2018</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Download Section -->
+    <div class="download-section">
+      <a href="Sagar _Shivaji_Resume.pdf" class="download-btn" download>
+        <i class="fas fa-download"></i>
+        Download Resume (PDF)
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Function to toggle the sidebar (YouTube-style)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const body = document.body;
+      const overlay = document.getElementById('sidebarOverlay');
+
+      // Mobile behavior: slide overlay in/out
+      if (window.innerWidth <= 900) {
+        const isOpen = sidebar.classList.contains('open');
+        if (isOpen) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('show');
+        } else {
+          sidebar.classList.add('open');
+          overlay.classList.add('show');
+        }
+      } else {
+        // Desktop behavior: YouTube-like collapse (icons only)
+        sidebar.classList.toggle('collapsed');
+        body.classList.toggle('menu-collapsed');
+      }
+    }
+
+    // Initialize
+    const hamburgerBtn = document.getElementById('hamburger');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    hamburgerBtn.addEventListener('click', toggleSidebar);
+
+    // Close mobile overlay when overlay clicked
+    sidebarOverlay.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+
+    // Close mobile overlay with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('sidebar').classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+      }
+    });
+
+    // Ensure classes are in sensible state on resize
+    window.addEventListener('resize', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (window.innerWidth > 900) {
+        // Remove mobile-only states
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      } else {
+        // Keep collapsed state off on mobile so slide works
+        sidebar.classList.remove('collapsed');
+        document.body.classList.remove('menu-collapsed');
+      }
+    });
+  </script>
+</body>
+</html>
